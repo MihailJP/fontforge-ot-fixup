@@ -1,18 +1,11 @@
 import fontforge
-
-
-def hello(u, glyph):
-    fontforge.postNotice("FontForge Plugin Template", "Hello, world!")
-
-
-def helloEnable(u, glyph):
-    return True
+from . import smartDropout
 
 
 def fontforge_plugin_init(**kw):
     fontforge.registerMenuItem(
-        callback=hello,
-        enable=helloEnable,
-        context=("Font", "Glyph"),
-        name="Hello"
+        callback=lambda _, font: smartDropout.activateSmartDropout(font),
+        enable=lambda _, font: not smartDropout.isSmartDropoutActive(font),
+        context="Font",
+        name="Activate smart dropout"
     )
