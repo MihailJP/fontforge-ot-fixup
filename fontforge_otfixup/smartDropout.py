@@ -15,7 +15,7 @@ __all__ = [
 
 def isSmartDropoutActive(font: fontforge.font) -> bool:
     """Check if smart dropout is already activated for the font
-    
+
     :param font: Fontforge font object
     :type font: fontforge.font
     :return: ``True`` if already active, ``False`` otherwise
@@ -37,7 +37,7 @@ def isSmartDropoutActive(font: fontforge.font) -> bool:
 
 def activateSmartDropout(font: fontforge.font):
     """Activates smart dropout for the font
-    
+
     This function appends the following snippet into ``prep`` table:
     ``0xb8 0x01 0xff 0x85 0xb0 0x04 0x8d`` in bytecode, or
     ``PUSHW 511 SCANCTRL PUSHB 4 SCANTYPE`` in mnemonics.
