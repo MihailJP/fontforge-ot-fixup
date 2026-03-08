@@ -37,14 +37,12 @@ class _ufoInfo3(_ufoInfo2):
 
 
 def _fixPostIsFixedPitch_ttf(font: fontforge.font, target: str):
-    # TODO: configuration to enable or disable
     with ttLib.TTFont(target) as ttf:
         ttf['post'].isFixedPitch = 1
         ttf.save(target)
 
 
 def _fixPostIsFixedPitch_ufo(font: fontforge.font, target: str):
-    # TODO: configuration to enable or disable
     with ufoLib.UFOReaderWriter(target) as ufo:
         info = _ufoInfo3() if ufo.formatVersionTuple[0] >= 3 else _ufoInfo2()
         ufo.readInfo(info)
