@@ -27,6 +27,25 @@ path where the required module.
 export PYTHONPATH=/path/to/fontforge/python/module:$PYTHONPATH
 ```
 
+Configuration
+-------------
+
+This plugin has configuration menu. Select File > Configure Plugins... > OT
+fixup utility and click Configure to open.
+
+Configuration will be stored in
+`~/.config/fontforge/plugin/OT fixup utility.toml`
+(for Linux.)
+
+### Fix post.isFixedPitch
+
+Table: `[hooks.post.isFixedPitch]`\
+Keys: `ttf` and `ufo`\
+Type: `bool`
+
+Enable or disable the font generation hook (see below.) Can be configured
+for each format, TTF (including OTF) and UFO.
+
 Usage
 -----
 
@@ -50,6 +69,22 @@ B0h    PUSHB
 ```
 
 If already appended the menu will be disabled.
+
+### Hooks
+
+This plugin installs new/load font hook that installs font generation
+hook. The latter automatically fixes certain issues in exported font.
+
+#### Fix `post.isFixedPitch`
+
+Fontforge may export with `post.isFixedPitch` = 0 even for monospace fonts.
+This is because Fontforge requires all glyph **including** combining marks
+have the same advance width in order to export with `post.isFixedPitch` = 1.
+This is usually inappropriate.
+
+This hook fixes the flag after normal export referring only U+0020 to U+007E.
+
+Works when exporting TTF, OTF, or UFO.
 
 ### In Python script
 
