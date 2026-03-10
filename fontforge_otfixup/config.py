@@ -5,8 +5,11 @@ _configPath = None
 config = TOMLDocument()
 
 
-def _makeSureItemIsInstanceOf(item: str, typeobj: type, d=config):
+def _makeSureItemIsInstanceOf(item: str, typeobj: type, d=None):
     from typing import Iterable
+
+    if d is None:
+        d = config
 
     itmHead, *itmTail = item.split('.')
     if len(itmTail) == 0:
@@ -25,6 +28,7 @@ def _makeSureItemIsInstanceOf(item: str, typeobj: type, d=config):
 def _fixTypeOfConf():
     _makeSureItemIsInstanceOf('hooks.post.isFixedPitch.ttf', bool)
     _makeSureItemIsInstanceOf('hooks.post.isFixedPitch.ufo', bool)
+    _makeSureItemIsInstanceOf('hooks.GSUB.aalt.ufo', bool)
 
 
 def loadConfig(filename: str):
@@ -45,6 +49,7 @@ def saveConfig():
 
 
 def configInterface():
+    _fixTypeOfConf()
     ans = fontforge.askMulti(
         'Configuration',
         [
@@ -64,10 +69,24 @@ def configInterface():
                         'default': config['hooks']['post']['isFixedPitch']['ufo'],
                     },
                 ]
-            }
+            },
+            {
+                'type': 'choice',
+                'question': "Fix 'aalt' feature",
+                'multiple': True,
+                'checks': True,
+                'tag': 'hooks.GSUB.aalt',
+                'answers': [
+                    {
+                        'name': 'UFO', 'tag': 'ufo',
+                        'default': config['hooks']['GSUB']['aalt']['ufo'],
+                    },
+                ]
+            },
         ]
     )
     if ans:
         config['hooks']['post']['isFixedPitch']['ttf'] = ('ttf' in ans['hooks.post.isFixedPitch'])
         config['hooks']['post']['isFixedPitch']['ufo'] = ('ufo' in ans['hooks.post.isFixedPitch'])
+        config['hooks']['GSUB']['aalt']['ufo'] = ('ufo' in ans['hooks.GSUB.aalt'])
         saveConfig()

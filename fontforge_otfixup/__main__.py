@@ -1,5 +1,5 @@
 import fontforge
-from . import config, postIsFixedPitchHook, smartDropout
+from . import aaltFeatureHook, config, postIsFixedPitchHook, smartDropout
 from typing import Literal, Callable
 
 
@@ -40,7 +40,10 @@ def _addFontHook(
 
 
 def fontforge_plugin_config(**kw):
-    config.configInterface()
+    try:
+        config.configInterface()
+    except Exception as e:
+        fontforge.postError(e.__class__.__name__, e)
 
 
 def fontforge_plugin_init(preferences_path=None, **_):
@@ -54,6 +57,7 @@ def fontforge_plugin_init(preferences_path=None, **_):
 
     def generateHook(font: fontforge.font, target: str):
         postIsFixedPitchHook.fixPostIsFixedPitch(font, target)
+        aaltFeatureHook.fixAaltFeature(font, target)
 
     def openHook(font: fontforge.font):
         _addFontHook(font, 'generateFontPostHook', generateHook)

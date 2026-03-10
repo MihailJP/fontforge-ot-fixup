@@ -1,7 +1,6 @@
 import fontforge
 from fontTools import ttLib, ufoLib
-from typing import Iterable
-from . import config
+from . import config, utils
 
 
 def _isFixedPitch(font: fontforge.font) -> bool:
@@ -50,19 +49,15 @@ def _fixPostIsFixedPitch_ufo(font: fontforge.font, target: str):
         ufo.writeInfo(info)
 
 
-def _checkExtension(filename: str, extensions: Iterable[str]) -> bool:
-    return any((filename.endswith(ex) for ex in extensions))
-
-
 def fixPostIsFixedPitch(font: fontforge.font, target: str):
     if _isFixedPitch(font):
         if (
-            _checkExtension(target, ['.ttf', '.otf']) and
+            utils.checkExtension(target, ['.ttf', '.otf']) and
             config.config['hooks']['post']['isFixedPitch']['ttf']
         ):
             _fixPostIsFixedPitch_ttf(font, target)
         elif (
-            _checkExtension(target, ['.ufo', '.ufo2', '.ufo3']) and
+            utils.checkExtension(target, ['.ufo', '.ufo2', '.ufo3']) and
             config.config['hooks']['post']['isFixedPitch']['ufo']
         ):
             _fixPostIsFixedPitch_ufo(font, target)

@@ -46,6 +46,15 @@ Type: `bool`
 Enable or disable the font generation hook (see below.) Can be configured
 for each format, TTF (including OTF) and UFO.
 
+### Fix 'aalt' feature
+
+Table: `[hooks.GSUB.aalt]`\
+Keys: `ufo`\
+Type: `bool`
+
+Enable or disable the font generation hook (see below.) Only applicable
+for UFO.
+
 Usage
 -----
 
@@ -85,6 +94,17 @@ This is usually inappropriate.
 This hook fixes the flag after normal export referring only U+0020 to U+007E.
 
 Works when exporting TTF, OTF, or UFO.
+
+#### Fix `aalt` feature
+
+Fontforge can export UFO but lacks special handling for `aalt` feature.
+This may result an invalid feature file (*.ufo/feature.fea); it is that
+`aalt` cannot contain `script` or `language` instructions.
+
+This hook fixes `aalt` feature, or adds it if it does not exist. Existing
+lookups in `aalt` features will be included as `aalt`-only ones.
+
+Works only when exporting UFO.
 
 ### In Python script
 
