@@ -1,4 +1,5 @@
 import pytest
+
 from fontforge_otfixup import utils
 
 

@@ -1,6 +1,8 @@
-import fontforge
-from . import aaltFeatureHook, config, postIsFixedPitchHook, smartDropout
 from typing import Literal, Callable
+
+import fontforge
+
+from . import aaltFeatureHook, config, postIsFixedPitchHook, smartDropout
 
 
 def _addGlobalHook(

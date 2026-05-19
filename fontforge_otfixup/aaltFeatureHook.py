@@ -1,7 +1,9 @@
-import fontforge
-import re
-from . import config, utils
 from pathlib import Path
+import re
+
+import fontforge
+
+from . import config, utils
 
 
 def _aaltExists(font: fontforge.font) -> bool:

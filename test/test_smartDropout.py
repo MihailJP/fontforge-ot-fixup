@@ -1,5 +1,6 @@
-import pytest
 import fontforge
+import pytest
+
 from fontforge_otfixup import smartDropout
 
 

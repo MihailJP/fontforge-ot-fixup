@@ -1,16 +1,11 @@
-import fontforge
 import re
+
+import fontforge
 
 
 SCANCTRL_511 = b'\xb8\x01\xff\x85'
 SCANTYPE_4 = b'\xb0\x04\x8d'
 SMART_DROPOUT_SNIPPET = SCANCTRL_511 + SCANTYPE_4
-
-
-__all__ = [
-    'activateSmartDropout',
-    'isSmartDropoutActive',
-]
 
 
 def isSmartDropoutActive(font: fontforge.font) -> bool:

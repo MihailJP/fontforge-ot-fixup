@@ -1,5 +1,6 @@
 import fontforge
 from fontTools import ttLib, ufoLib
+
 from . import config, utils
 
 
