@@ -1,44 +1,7 @@
-from typing import Literal, Callable
-
 import fontforge
 
 from . import aaltFeatureHook, config, postIsFixedPitchHook, smartDropout
-
-
-def _addGlobalHook(
-    name: Literal['newFontHook', 'loadFontHook'],
-    hook: Callable[[fontforge.font], None]
-):
-    assert isinstance(fontforge.hooks, dict)
-    if name in fontforge.hooks:
-        currentHook = fontforge.hooks[name]
-
-        def chainHook(font: fontforge.font):
-            currentHook(font)
-            hook(font)
-
-        fontforge.hooks[name] = chainHook
-    else:
-        fontforge.hooks[name] = hook
-
-
-def _addFontHook(
-    font: fontforge.font,
-    name: Literal['generateFontPreHook', 'generateFontPostHook'],
-    hook: Callable[[fontforge.font, str], None]
-):
-    if not isinstance(font.temporary, dict):
-        font.temporary = {}
-    if name in font.temporary:
-        currentHook = font.temporary[name]
-
-        def chainHook(font: fontforge.font, target: str):
-            currentHook(font, target)
-            hook(font, target)
-
-        font.temporary[name] = chainHook
-    else:
-        font.temporary[name] = hook
+from fontforge_plugin_helper import addSystemHook, generationHookSetter
 
 
 def fontforge_plugin_config(**kw):
@@ -61,8 +24,5 @@ def fontforge_plugin_init(preferences_path=None, **_):
         postIsFixedPitchHook.fixPostIsFixedPitch(font, target)
         aaltFeatureHook.fixAaltFeature(font, target)
 
-    def openHook(font: fontforge.font):
-        _addFontHook(font, 'generateFontPostHook', generateHook)
-
-    _addGlobalHook('newFontHook', openHook)
-    _addGlobalHook('loadFontHook', openHook)
+    addSystemHook('newFontHook', generationHookSetter(None, generateHook))
+    addSystemHook('loadFontHook', generationHookSetter(None, generateHook))
