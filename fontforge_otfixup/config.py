@@ -44,6 +44,7 @@ def loadConfig(filename: str):
 
 
 def saveConfig():
+    assert _configPath is not None
     configFile = TOMLFile(_configPath)
     configFile.write(config)
 
@@ -62,11 +63,11 @@ def configInterface():
                 'answers': [
                     {
                         'name': 'TTF', 'tag': 'ttf',
-                        'default': config['hooks']['post']['isFixedPitch']['ttf'],
+                        'default': config['hooks']['post']['isFixedPitch']['ttf'],  # pyright: ignore[reportIndexIssue]
                     },
                     {
                         'name': 'UFO', 'tag': 'ufo',
-                        'default': config['hooks']['post']['isFixedPitch']['ufo'],
+                        'default': config['hooks']['post']['isFixedPitch']['ufo'],  # pyright: ignore[reportIndexIssue]
                     },
                 ]
             },
@@ -79,14 +80,20 @@ def configInterface():
                 'answers': [
                     {
                         'name': 'UFO', 'tag': 'ufo',
-                        'default': config['hooks']['GSUB']['aalt']['ufo'],
+                        'default': config['hooks']['GSUB']['aalt']['ufo'],  # pyright: ignore[reportIndexIssue]
                     },
                 ]
             },
         ]
     )
     if ans:
-        config['hooks']['post']['isFixedPitch']['ttf'] = ('ttf' in ans['hooks.post.isFixedPitch'])
-        config['hooks']['post']['isFixedPitch']['ufo'] = ('ufo' in ans['hooks.post.isFixedPitch'])
-        config['hooks']['GSUB']['aalt']['ufo'] = ('ufo' in ans['hooks.GSUB.aalt'])
+        assert isinstance(ans['hooks.post.isFixedPitch'], tuple)
+        assert isinstance(ans['hooks.GSUB.aalt'], tuple)
+        config['hooks']['post']['isFixedPitch']['ttf'] = (  # pyright: ignore[reportIndexIssue]
+            'ttf' in ans['hooks.post.isFixedPitch']
+        )
+        config['hooks']['post']['isFixedPitch']['ufo'] = (  # pyright: ignore[reportIndexIssue]
+            'ufo' in ans['hooks.post.isFixedPitch']
+        )
+        config['hooks']['GSUB']['aalt']['ufo'] = ('ufo' in ans['hooks.GSUB.aalt'])  # pyright: ignore[reportIndexIssue]
         saveConfig()

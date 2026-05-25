@@ -47,6 +47,6 @@ def _fixAaltFeature_ufo(font: fontforge.font, target: str):
 def fixAaltFeature(font: fontforge.font, target: str):
     if (
         utils.checkExtension(target, ['.ufo', '.ufo2', '.ufo3']) and
-        config.config['hooks']['GSUB']['aalt']['ufo']
+        config.config['hooks']['GSUB']['aalt']['ufo']  # pyright: ignore[reportIndexIssue]
     ):
         _fixAaltFeature_ufo(font, target)

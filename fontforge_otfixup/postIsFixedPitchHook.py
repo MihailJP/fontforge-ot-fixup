@@ -38,7 +38,7 @@ class _ufoInfo3(_ufoInfo2):
 
 def _fixPostIsFixedPitch_ttf(font: fontforge.font, target: str):
     with ttLib.TTFont(target) as ttf:
-        ttf['post'].isFixedPitch = 1
+        ttf['post'].isFixedPitch = 1  # type: ignore
         ttf.save(target)
 
 
@@ -46,19 +46,19 @@ def _fixPostIsFixedPitch_ufo(font: fontforge.font, target: str):
     with ufoLib.UFOReaderWriter(target) as ufo:
         info = _ufoInfo3() if ufo.formatVersionTuple[0] >= 3 else _ufoInfo2()
         ufo.readInfo(info)
-        ufo.postscriptIsFixedPitch = True
-        ufo.writeInfo(info)
+        ufo.postscriptIsFixedPitch = True  # type: ignore
+        ufo.writeInfo(info)  # type: ignore
 
 
 def fixPostIsFixedPitch(font: fontforge.font, target: str):
     if _isFixedPitch(font):
         if (
             utils.checkExtension(target, ['.ttf', '.otf']) and
-            config.config['hooks']['post']['isFixedPitch']['ttf']
+            config.config['hooks']['post']['isFixedPitch']['ttf']  # pyright: ignore[reportIndexIssue]
         ):
             _fixPostIsFixedPitch_ttf(font, target)
         elif (
             utils.checkExtension(target, ['.ufo', '.ufo2', '.ufo3']) and
-            config.config['hooks']['post']['isFixedPitch']['ufo']
+            config.config['hooks']['post']['isFixedPitch']['ufo']  # pyright: ignore[reportIndexIssue]
         ):
             _fixPostIsFixedPitch_ufo(font, target)
