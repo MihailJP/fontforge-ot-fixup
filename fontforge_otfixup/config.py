@@ -2,6 +2,8 @@ import fontforge
 from tomlkit.toml_file import TOMLFile
 from tomlkit.toml_document import TOMLDocument
 
+from .translation import tr
+
 _configPath = None
 config = TOMLDocument()
 
@@ -57,7 +59,7 @@ def configInterface():
         [
             {
                 'type': 'choice',
-                'question': 'Fix post.isFixedPitch',
+                'question': tr.get('Fix post.isFixedPitch'),
                 'multiple': True,
                 'checks': True,
                 'tag': 'hooks.post.isFixedPitch',
@@ -74,7 +76,7 @@ def configInterface():
             },
             {
                 'type': 'choice',
-                'question': "Fix 'aalt' feature",
+                'question': tr.get("Fix 'aalt' feature"),
                 'multiple': True,
                 'checks': True,
                 'tag': 'hooks.GSUB.aalt',

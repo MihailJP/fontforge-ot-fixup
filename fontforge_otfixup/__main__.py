@@ -1,6 +1,7 @@
 import fontforge
 
 from . import aaltFeatureHook, config, postIsFixedPitchHook, smartDropout
+from .translation import tr, setTranslation
 from fontforge_plugin_helper import addSystemHook, generationHookSetter
 
 
@@ -12,11 +13,12 @@ def fontforge_plugin_config(**kw):
 
 
 def fontforge_plugin_init(preferences_path=None, **_):
+    setTranslation()
     fontforge.registerMenuItem(
         callback=lambda _, font: smartDropout.activateSmartDropout(font),  # type: ignore
         enable=lambda _, font: not smartDropout.isSmartDropoutActive(font),  # type: ignore
         context="Font",
-        name="Activate smart dropout"
+        name=tr.get('Activate s_mart dropout')
     )
     config.loadConfig(preferences_path + '.toml')  # type: ignore
 
