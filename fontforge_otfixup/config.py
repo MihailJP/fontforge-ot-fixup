@@ -1,5 +1,6 @@
 import fontforge
-from tomlkit.toml_file import TOMLFile, TOMLDocument
+from tomlkit.toml_file import TOMLFile
+from tomlkit.toml_document import TOMLDocument
 
 _configPath = None
 config = TOMLDocument()
