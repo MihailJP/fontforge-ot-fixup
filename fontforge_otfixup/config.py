@@ -55,7 +55,7 @@ def saveConfig():
 def configInterface():
     _fixTypeOfConf()
     ans = fontforge.askMulti(
-        'Configuration',
+        tr.get('Configuration'),
         [
             {
                 'type': 'choice',
