@@ -32,6 +32,7 @@ def _fixTypeOfConf():
     _makeSureItemIsInstanceOf('hooks.post.isFixedPitch.ttf', bool)
     _makeSureItemIsInstanceOf('hooks.post.isFixedPitch.ufo', bool)
     _makeSureItemIsInstanceOf('hooks.GSUB.aalt.ufo', bool)
+    _makeSureItemIsInstanceOf('hooks.glyph.null_CR.ttf', bool)
 
 
 def loadConfig(filename: str):
@@ -87,11 +88,25 @@ def configInterface():
                     },
                 ]
             },
+            {
+                'type': 'choice',
+                'question': tr.get("Remove '.null' and 'nonmarkingreturn'"),
+                'multiple': True,
+                'checks': True,
+                'tag': 'hooks.glyph.null_CR',
+                'answers': [
+                    {
+                        'name': 'TTF', 'tag': 'ttf',
+                        'default': config['hooks']['glyph']['null_CR']['ttf'],  # pyright: ignore[reportIndexIssue]
+                    },
+                ]
+            },
         ]
     )
     if ans:
         assert isinstance(ans['hooks.post.isFixedPitch'], tuple)
         assert isinstance(ans['hooks.GSUB.aalt'], tuple)
+        assert isinstance(ans['hooks.glyph.null_CR'], tuple)
         config['hooks']['post']['isFixedPitch']['ttf'] = (  # pyright: ignore[reportIndexIssue]
             'ttf' in ans['hooks.post.isFixedPitch']
         )
@@ -99,4 +114,7 @@ def configInterface():
             'ufo' in ans['hooks.post.isFixedPitch']
         )
         config['hooks']['GSUB']['aalt']['ufo'] = ('ufo' in ans['hooks.GSUB.aalt'])  # pyright: ignore[reportIndexIssue]
+        config['hooks']['glyph']['null_CR']['ttf'] = (  # pyright: ignore[reportIndexIssue]
+            'ttf' in ans['hooks.glyph.null_CR']
+        )
         saveConfig()

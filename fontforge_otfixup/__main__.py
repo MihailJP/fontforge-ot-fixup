@@ -1,6 +1,6 @@
 import fontforge
 
-from . import aaltFeatureHook, config, postIsFixedPitchHook, smartDropout
+from . import aaltFeatureHook, config, glyphNullCRHook, postIsFixedPitchHook, smartDropout
 from .translation import tr, setTranslation
 from fontforge_plugin_helper import addSystemHook, generationHookSetter
 
@@ -25,6 +25,7 @@ def fontforge_plugin_init(preferences_path=None, **_):
     def generateHook(font: fontforge.font, target: str):
         postIsFixedPitchHook.fixPostIsFixedPitch(font, target)
         aaltFeatureHook.fixAaltFeature(font, target)
+        glyphNullCRHook.removeNullAndNonmarkingreturn(font, target)
 
     addSystemHook('newFontHook', generationHookSetter(None, generateHook))
     addSystemHook('loadFontHook', generationHookSetter(None, generateHook))
