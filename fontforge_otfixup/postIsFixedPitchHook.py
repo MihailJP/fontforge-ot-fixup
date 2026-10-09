@@ -4,12 +4,17 @@ from fontTools import ttLib, ufoLib
 from . import config, utils
 
 
+def _fixedPitchWidths(font: fontforge.font):
+    return (glyph.width for glyph in font.glyphs() if 0x20 <= glyph.unicode <= 0x7e)
+
+
 def _isFixedPitch(font: fontforge.font) -> bool:
-    return len(
-        set(
-            (glyph.width for glyph in font.glyphs() if 0x20 <= glyph.unicode <= 0x7e)
-        )
-    ) == 1
+    return len(set(_fixedPitchWidths(font))) == 1
+
+
+def _fixedPitchWidth(font: fontforge.font):
+    assert _isFixedPitch(font)
+    return list(_fixedPitchWidths(font))[0]
 
 
 class _ufoInfo2:
@@ -39,6 +44,7 @@ class _ufoInfo3(_ufoInfo2):
 def _fixPostIsFixedPitch_ttf(font: fontforge.font, target: str):
     with ttLib.TTFont(target) as ttf:
         ttf['post'].isFixedPitch = 1  # type: ignore
+        ttf['OS/2'].xAvgCharWidth = _fixedPitchWidth(font)
         ttf.save(target)
 
 
