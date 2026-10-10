@@ -95,6 +95,21 @@ This hook fixes the flag after normal export referring only U+0020 to U+007E.
 
 Works when exporting TTF, OTF, or UFO.
 
+#### Fix `OS/2.xAvgCharWidth`
+
+For `OS/2.version` ≥ 3, `OS/2.xAvgCharWidth` is calculated from **all**
+non-zero-width glyphs.
+However, this causes misbehavior for CJK monospaced fonts
+in certain environments. Such fonts have fullwidth (_zenkaku_) characters
+as opposed to halfwidth (_hankaku_) ones which corresponds to any glyphs
+in Western fonts.
+
+This hook fixes the average width to what calculated
+from only U+0020 to U+007E.
+This is typically the advance width of halfwidth characters.
+
+Works when exporting TTF or OTF. Monospaced fonts only.
+
 #### Fix `aalt` feature
 
 Fontforge can export UFO but lacks special handling for `aalt` feature.

@@ -5,5 +5,6 @@ translation_ja = {
     # config.py
     'Configuration': '設定',
     'Fix post.isFixedPitch': 'post.isFixedPitchを修正',
+    'Fix OS/2.xAvgCharWidth': 'OS/2.xAvgCharWidthを修正',
     "Fix 'aalt' feature": "'aalt' 機能を修正",
 }

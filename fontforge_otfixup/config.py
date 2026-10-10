@@ -32,6 +32,7 @@ def _fixTypeOfConf():
     _makeSureItemIsInstanceOf('hooks.post.isFixedPitch.ttf', bool)
     _makeSureItemIsInstanceOf('hooks.post.isFixedPitch.ufo', bool)
     _makeSureItemIsInstanceOf('hooks.GSUB.aalt.ufo', bool)
+    _makeSureItemIsInstanceOf('hooks.OS/2.xAvgCharWidth.ttf', bool)
 
 
 def loadConfig(filename: str):
@@ -76,6 +77,19 @@ def configInterface():
             },
             {
                 'type': 'choice',
+                'question': tr.get('Fix OS/2.xAvgCharWidth'),
+                'multiple': True,
+                'checks': True,
+                'tag': 'hooks.OS/2.xAvgCharWidth',
+                'answers': [
+                    {
+                        'name': 'TTF', 'tag': 'ttf',
+                        'default': config['hooks']['OS/2']['xAvgCharWidth']['ttf'],  # pyright: ignore[reportIndexIssue]
+                    },
+                ]
+            },
+            {
+                'type': 'choice',
                 'question': tr.get("Fix 'aalt' feature"),
                 'multiple': True,
                 'checks': True,
@@ -92,11 +106,15 @@ def configInterface():
     if ans:
         assert isinstance(ans['hooks.post.isFixedPitch'], tuple)
         assert isinstance(ans['hooks.GSUB.aalt'], tuple)
+        assert isinstance(ans['hooks.OS/2.xAvgCharWidth'], tuple)
         config['hooks']['post']['isFixedPitch']['ttf'] = (  # pyright: ignore[reportIndexIssue]
             'ttf' in ans['hooks.post.isFixedPitch']
         )
         config['hooks']['post']['isFixedPitch']['ufo'] = (  # pyright: ignore[reportIndexIssue]
             'ufo' in ans['hooks.post.isFixedPitch']
+        )
+        config['hooks']['OS/2']['xAvgCharWidth']['ttf'] = (  # pyright: ignore[reportIndexIssue]
+            'ttf' in ans['hooks.OS/2.xAvgCharWidth']
         )
         config['hooks']['GSUB']['aalt']['ufo'] = ('ufo' in ans['hooks.GSUB.aalt'])  # pyright: ignore[reportIndexIssue]
         saveConfig()
