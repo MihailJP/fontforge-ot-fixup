@@ -46,6 +46,15 @@ Type: `bool`
 Enable or disable the font generation hook (see below.) Can be configured
 for each format, TTF (including OTF) and UFO.
 
+### Fix OS/2.xAvgCharWidth
+
+Table: `[hooks.OS/2.xAvgCharWidth]`\
+Keys: `ttf`\
+Type: `bool`
+
+Enable or disable the font generation hook (see below.) Only applicable
+for TTF.
+
 ### Fix 'aalt' feature
 
 Table: `[hooks.GSUB.aalt]`\
